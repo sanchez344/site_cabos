@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Guia Visual de Redes para Automação | Industrial Tech</title>
+    <title>Guia Visual de Redes para Automação v3 | Industrial Tech</title>
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -66,6 +66,16 @@
             color: #67E8F9;
             background: rgba(8, 145, 178, 0.3);
         }
+        .badge-yellow {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #FCD34D;
+            background: rgba(120, 53, 15, 0.4);
+        }
+        .badge-purple {
+            border-color: rgba(168, 85, 247, 0.5);
+            color: #D8B4FE;
+            background: rgba(107, 33, 168, 0.3);
+        }
         /* Animações */
         .fade-in {
             animation: fadeSlideUp 0.35s ease-out;
@@ -94,6 +104,19 @@
             background: #1F2A32;
             border-bottom: 2px solid #2A9D8F;
             color: #E6F7FF;
+        }
+        /* Versão 3.0 Badge */
+        .version-badge {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: #D1FAE5;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            letter-spacing: 0.5px;
+            border: 1px solid #34D399;
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+            backdrop-filter: blur(2px);
         }
         /* Simulador de topologia */
         .network-node {
@@ -158,11 +181,17 @@
 <body class="text-gray-200 antialiased">
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-        <!-- Header industrial -->
+        <!-- Header industrial com badge v3 -->
         <div class="mb-8 border-b border-cyan-800/40 pb-4 flex flex-wrap justify-between items-end">
-            <div>
-                <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">⚙️ Guia Visual de Redes</h1>
-                <p class="text-gray-400 text-sm font-mono mt-1">para Automação Industrial — técnicos e eletricistas iniciantes</p>
+            <div class="flex items-center gap-3 flex-wrap">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">⚙️ Guia Visual de Redes</h1>
+                    <p class="text-gray-400 text-sm font-mono mt-1">para Automação Industrial — técnicos e eletricistas iniciantes</p>
+                </div>
+                <!-- Badge de versão v3 em destaque -->
+                <div class="version-badge ml-2 md:ml-4 shadow-lg">
+                    🚀 VERSÃO 3.0
+                </div>
             </div>
             <div class="text-xs text-cyan-400/70 font-mono mt-2 md:mt-0">SCADA READY • PROTOCOLO INDUSTRIAL</div>
         </div>
@@ -179,7 +208,7 @@
 
         <!-- CONTEÚDO DA ABA 1: MEIOS FÍSICOS -->
         <div id="tabMeiosContent" class="tab-content fade-in">
-            <!-- Grid de 3 cards - APENAS título e ícone -->
+            <!-- Grid de 3 cards - APENAS título e ícone (RS-485 agora no lugar de Wireless) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="cardsGrid">
                 <!-- Card Par Trançado -->
                 <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="par">
@@ -195,11 +224,11 @@
                         <h2 class="text-xl font-bold text-cyan-300 mt-2">Fibra Óptica</h2>
                     </div>
                 </div>
-                <!-- Card Wireless -->
-                <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="wireless">
+                <!-- Card Cabo RS-485 (substituindo Wireless) -->
+                <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="rs485">
                     <div class="flex flex-col items-center gap-3">
-                        <span class="text-6xl">📡</span>
-                        <h2 class="text-xl font-bold text-cyan-300 mt-2">Wireless</h2>
+                        <span class="text-6xl">🔌</span>
+                        <h2 class="text-xl font-bold text-cyan-300 mt-2">Cabo RS-485</h2>
                     </div>
                 </div>
             </div>
@@ -214,9 +243,9 @@
                     
                     <!-- Layout responsivo: imagem + conteúdo -->
                     <div class="flex flex-col lg:flex-row gap-6">
-                        <!-- Coluna da Imagem -->
+                        <!-- Coluna da Imagem (links do Wikimedia) -->
                         <div class="lg:w-1/2">
-                            <img id="detailImage" src="" alt="Imagem ilustrativa" class="rounded-xl shadow-2xl w-full object-cover bg-black/40">
+                            <img id="detailImage" src="" alt="Imagem ilustrativa do cabo" class="rounded-xl shadow-2xl w-full object-cover bg-black/40">
                             <p class="text-center text-xs text-gray-500 mt-2 font-mono">📸 Imagem referencial do equipamento</p>
                         </div>
                         
@@ -284,7 +313,7 @@
         tabMeiosBtn.addEventListener('click', () => setActiveTab('meios'));
         tabSimuladorBtn.addEventListener('click', () => setActiveTab('simulador'));
         
-        // ------------------- Lógica dos Cards com URLs diretas (Unplash) -------------------
+        // ------------------- Lógica dos Cards com URLs do Wikimedia -------------------
         const cards = document.querySelectorAll('.card-item');
         const detailPanel = document.getElementById('detailPanel');
         const detailTitleSpan = document.getElementById('detailTitle');
@@ -301,11 +330,11 @@
             });
         }
         
-        // URLs diretas fornecidas
+        // URLs do Wikimedia para imagens precisas e profissionais
         const IMAGE_URLS = {
-            par: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500',
-            fibra: 'https://images.unsplash.com/photo-1601524909162-be87252be298?w=500',
-            wireless: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=500'
+            par: 'https://upload.wikimedia.org/wikipedia/commons/2/23/Two_twisted_pairs_of_a_UTP_cable_-_blue_white.jpg',
+            fibra: 'https://upload.wikimedia.org/wikipedia/commons/d/df/Fiber_optic_patch_cords.jpg',
+            rs485: 'https://upload.wikimedia.org/wikipedia/commons/c/cd/Twisted_pair_shielded_cable.jpg'
         };
         
         function showCardDetails(cardType) {
@@ -323,8 +352,8 @@
                 badgesHtml = `
                     <span class="badge badge-green">💰 Custo: Baixo</span>
                     <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
-                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">🔌 Conector RJ45 / M12</span>
-                    <span class="badge bg-yellow-900/40 text-yellow-300 border-yellow-600/50">🏭 Aplicação: CLPs, IHMs, redes locais</span>
+                    <span class="badge badge-purple">🔌 Conector RJ45 / M12</span>
+                    <span class="badge badge-yellow">🏭 Aplicação: CLPs, IHMs, redes locais</span>
                 `;
             } 
             else if (cardType === 'fibra') {
@@ -335,20 +364,20 @@
                 badgesHtml = `
                     <span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
                     <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto (conversores/SFP)</span>
-                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">🔌 Conectores SC/LC / E2000</span>
-                    <span class="badge bg-yellow-900/40 text-yellow-300 border-yellow-600/50">🌍 Longa distância e alta largura de banda</span>
+                    <span class="badge badge-purple">🔌 Conectores SC/LC / E2000</span>
+                    <span class="badge badge-yellow">🌍 Longa distância e alta largura de banda</span>
                 `;
             }
-            else if (cardType === 'wireless') {
-                title = '🔹 Rede Sem Fio (Wireless Industrial)';
-                imageSrc = IMAGE_URLS.wireless;
-                description = 'Rede sem fio. Usado para monitorar sensores que ficam em locais móveis ou de difícil acesso, como pontes rolantes, AGVs, robôs móveis e telemetria. Necessita planejamento de canais e pontos de acesso industriais robustos contra interferências.';
-                technicalInfo = '📊 Especificações: Padrões Wi-Fi 6 / 5G / LoRaWAN | Alcance típico 100m (indoor) | Latência variável | MIMO disponível';
+            else if (cardType === 'rs485') {
+                title = '🔹 Cabo RS-485 (Padrão Físico para Modbus RTU / Profibus)';
+                imageSrc = IMAGE_URLS.rs485;
+                description = 'Cabo de dois fios trançados com blindagem (A e B). Muito utilizado na indústria para conectar CLPs a inversores de frequência e multimedidores a longas distâncias, com alta imunidade a ruídos.';
+                technicalInfo = '📊 Especificações: Par trançado blindado | Impedância 120Ω | Transmissão diferencial | Suporta até 32 dispositivos por barramento';
                 badgesHtml = `
-                    <span class="badge badge-green">🏃 Mobilidade: Máxima</span>
-                    <span class="badge bg-amber-950/40 text-amber-300 border-amber-700">⚠️ Sujeito a Barreiras e Reflexões</span>
-                    <span class="badge badge-cyan">🔒 Segurança: WPA2-Enterprise / 802.1X</span>
-                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">📡 Ideal para AGVs e sensores rotativos</span>
+                    <span class="badge badge-green">🔄 Protocolos: Modbus RTU / Profibus</span>
+                    <span class="badge badge-cyan">📏 Distância: até 1200m (baixa velocidade)</span>
+                    <span class="badge badge-purple">🔗 Topologia: Barramento (Daisy-chain)</span>
+                    <span class="badge badge-yellow">⚙️ Aplicação: CLPs, inversores, sensores remotos</span>
                 `;
             }
             
