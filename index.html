@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Guia Visual de Redes para Automação | Industrial Tech</title>
-    <!-- Tailwind CSS via CDN + Fonts -->
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Inter + JetBrains Mono) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Custom CSS para efeitos industriais -->
     <style>
         * {
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -30,6 +29,7 @@
             border: 2px solid #00E5FF;
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
             background: #1A2C34;
+            transform: scale(1.02);
         }
         /* Scrollbar industrial */
         ::-webkit-scrollbar {
@@ -66,24 +66,14 @@
             color: #67E8F9;
             background: rgba(8, 145, 178, 0.3);
         }
-        .badge-yellow {
-            border-color: rgba(245, 158, 11, 0.5);
-            color: #FCD34D;
-            background: rgba(120, 53, 15, 0.4);
-        }
-        .badge-purple {
-            border-color: rgba(168, 85, 247, 0.5);
-            color: #D8B4FE;
-            background: rgba(107, 33, 168, 0.3);
-        }
         /* Animações */
         .fade-in {
-            animation: fadeSlideUp 0.3s ease-out;
+            animation: fadeSlideUp 0.35s ease-out;
         }
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -105,7 +95,7 @@
             border-bottom: 2px solid #2A9D8F;
             color: #E6F7FF;
         }
-        /* Simulador de topologia mini representação */
+        /* Simulador de topologia */
         .network-node {
             transition: all 0.2s;
             box-shadow: 0 0 0 1px rgba(0,255,200,0.3), 0 2px 6px rgba(0,0,0,0.4);
@@ -130,27 +120,25 @@
             padding: 1.5rem;
             box-shadow: inset 0 0 0 1px #2E3A44, 0 10px 20px -5px black;
         }
-        /* Responsividade do grid de cards */
-        @media (max-width: 780px) {
-            .grid-cards {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
         /* Estilo do painel de detalhes */
         .detail-panel {
             background: linear-gradient(135deg, #16222B 0%, #0F1820 100%);
             border: 1px solid #2E4A5C;
             border-radius: 1rem;
-            transition: all 0.2s;
+            transition: all 0.3s;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
         .detail-panel img {
-            max-height: 220px;
+            max-height: 260px;
             object-fit: cover;
             border-radius: 0.75rem;
             width: 100%;
-            border: 1px solid rgba(0, 229, 255, 0.3);
+            border: 2px solid rgba(0, 229, 255, 0.2);
+            transition: all 0.3s;
+        }
+        .detail-panel img:hover {
+            border-color: rgba(0, 229, 255, 0.6);
+            transform: scale(1.01);
         }
         .close-detail-btn {
             transition: all 0.2s;
@@ -158,7 +146,12 @@
         .close-detail-btn:hover {
             background: rgba(229, 62, 62, 0.2);
             color: #F87171;
-            transform: scale(1.05);
+            transform: scale(1.1);
+        }
+        @media (max-width: 768px) {
+            .detail-panel img {
+                max-height: 200px;
+            }
         }
     </style>
 </head>
@@ -186,7 +179,7 @@
 
         <!-- CONTEÚDO DA ABA 1: MEIOS FÍSICOS -->
         <div id="tabMeiosContent" class="tab-content fade-in">
-            <!-- Grid de 3 cards (APENAS título e ícone - completamente limpos) -->
+            <!-- Grid de 3 cards - APENAS título e ícone -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="cardsGrid">
                 <!-- Card Par Trançado -->
                 <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="par">
@@ -211,27 +204,29 @@
                 </div>
             </div>
 
-            <!-- Painel de Detalhes Inferior (inicialmente oculto) -->
-            <div id="detailPanel" class="detail-panel mt-8 p-6 hidden transition-all duration-300">
-                <div class="flex justify-between items-start mb-5">
-                    <h3 id="detailTitle" class="text-2xl md:text-3xl font-bold text-cyan-300 flex items-center gap-2"></h3>
-                    <button id="closeDetailBtn" class="close-detail-btn text-gray-400 hover:text-red-400 text-2xl leading-5 w-8 h-8 rounded-full flex items-center justify-center transition-all">✕</button>
-                </div>
-                
-                <!-- Layout de duas colunas (Flex/Grid do Tailwind) -->
-                <div class="flex flex-col lg:flex-row gap-6">
-                    <!-- Coluna Esquerda: Imagem -->
-                    <div class="lg:w-1/2">
-                        <img id="detailImage" src="" alt="Imagem do cabo" class="rounded-xl shadow-2xl w-full object-cover bg-black/40 transition-all hover:scale-[1.02] duration-300">
-                        <div class="text-center text-xs text-gray-500 mt-2 font-mono">* Imagem referencial do cabo</div>
+            <!-- Painel de Detalhes (inicia oculto) -->
+            <div id="detailPanel" class="detail-panel mt-8 hidden transition-all duration-300">
+                <div class="p-5 md:p-6">
+                    <div class="flex justify-between items-start mb-5">
+                        <h3 id="detailTitle" class="text-2xl md:text-3xl font-bold text-cyan-300 flex items-center gap-2"></h3>
+                        <button id="closeDetailBtn" class="close-detail-btn text-gray-400 hover:text-red-400 text-2xl leading-5 w-8 h-8 rounded-full flex items-center justify-center transition-all font-bold">✕</button>
                     </div>
                     
-                    <!-- Coluna Direita: Texto explicativo e badges -->
-                    <div class="lg:w-1/2 flex flex-col justify-between">
-                        <div>
-                            <div id="detailDescription" class="text-gray-200 text-base leading-relaxed mb-5"></div>
-                            <div id="detailTechnical" class="text-sm text-cyan-300/80 mb-4 font-mono border-l-2 border-cyan-500/50 pl-3"></div>
-                            <div id="detailBadges" class="flex flex-wrap gap-3 mt-4"></div>
+                    <!-- Layout responsivo: imagem + conteúdo -->
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Coluna da Imagem -->
+                        <div class="lg:w-1/2">
+                            <img id="detailImage" src="" alt="Imagem ilustrativa" class="rounded-xl shadow-2xl w-full object-cover bg-black/40">
+                            <p class="text-center text-xs text-gray-500 mt-2 font-mono">📸 Imagem referencial do equipamento</p>
+                        </div>
+                        
+                        <!-- Coluna do Conteúdo Textual -->
+                        <div class="lg:w-1/2 flex flex-col justify-between">
+                            <div>
+                                <div id="detailDescription" class="text-gray-200 text-base leading-relaxed mb-5"></div>
+                                <div id="detailTechnical" class="text-sm text-cyan-300/80 mb-4 font-mono border-l-2 border-cyan-500/50 pl-3"></div>
+                                <div id="detailBadges" class="flex flex-wrap gap-3 mt-4"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -250,9 +245,7 @@
                     </button>
                 </div>
                 
-                <!-- Painel de exibição da topologia -->
                 <div id="topologyDisplay" class="mini-topology transition-all"></div>
-                <!-- Área de vantagens / desvantagens -->
                 <div id="topologyDetails" class="mt-6 bg-[#0C1117] rounded-xl p-5 border-l-4 border-cyan-500/70"></div>
             </div>
         </div>
@@ -264,7 +257,6 @@
         const tabSimuladorBtn = document.getElementById('tabSimuladorBtn');
         const contentMeios = document.getElementById('tabMeiosContent');
         const contentSimulador = document.getElementById('tabSimuladorContent');
-        const detailPanel = document.getElementById('detailPanel');
         
         function setActiveTab(tab) {
             tabMeiosBtn.classList.remove('topo-btn-active');
@@ -292,8 +284,9 @@
         tabMeiosBtn.addEventListener('click', () => setActiveTab('meios'));
         tabSimuladorBtn.addEventListener('click', () => setActiveTab('simulador'));
         
-        // ------------------- Lógica dos Cards (limpos + painel de detalhes com imagem e informações) -------------------
+        // ------------------- Lógica dos Cards com URLs diretas (Unplash) -------------------
         const cards = document.querySelectorAll('.card-item');
+        const detailPanel = document.getElementById('detailPanel');
         const detailTitleSpan = document.getElementById('detailTitle');
         const detailImage = document.getElementById('detailImage');
         const detailDescriptionDiv = document.getElementById('detailDescription');
@@ -304,12 +297,17 @@
         function removeActiveClass() {
             cards.forEach(card => {
                 card.classList.remove('card-active');
-                card.style.border = '';
-                card.style.boxShadow = '';
+                card.style.transform = '';
             });
         }
         
-        // Função para exibir detalhes completos no painel inferior
+        // URLs diretas fornecidas
+        const IMAGE_URLS = {
+            par: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500',
+            fibra: 'https://images.unsplash.com/photo-1601524909162-be87252be298?w=500',
+            wireless: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=500'
+        };
+        
         function showCardDetails(cardType) {
             let title = '';
             let imageSrc = '';
@@ -319,61 +317,64 @@
             
             if (cardType === 'par') {
                 title = '🔹 Par Trançado (U/FTP, CAT5e/CAT6)';
-                imageSrc = 'imagens/par-trancado.jpg';
+                imageSrc = IMAGE_URLS.par;
                 description = 'Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor, além de conectar switches, IHMs e dispositivos de campo em distâncias de até 100 metros. É a base das redes industriais modernas para comunicação célere e confiável.';
-                technicalInfo = '📊 Especificações: Impedância 100Ω | Taxa até 1 Gbps | Distância máx. 100m';
+                technicalInfo = '📊 Especificações: Impedância 100Ω | Taxa até 1 Gbps | Distância máx. 100m | Blindagem disponível (STP)';
                 badgesHtml = `
                     <span class="badge badge-green">💰 Custo: Baixo</span>
                     <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
-                    <span class="badge badge-purple">🔌 Conector RJ45 / M12</span>
-                    <span class="badge badge-yellow">🏭 Aplicação: CLPs, IHMs, redes locais</span>
+                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">🔌 Conector RJ45 / M12</span>
+                    <span class="badge bg-yellow-900/40 text-yellow-300 border-yellow-600/50">🏭 Aplicação: CLPs, IHMs, redes locais</span>
                 `;
             } 
             else if (cardType === 'fibra') {
                 title = '🔹 Fibra Óptica (Monomodo / Multimodo)';
-                imageSrc = 'imagens/fibra.jpg';
+                imageSrc = IMAGE_URLS.fibra;
                 description = 'O cabo de vidro. Usado para levar dados a longas distâncias na fábrica sem sofrer com a interferência dos motores elétricos, inversores e campos eletromagnéticos severos. Ideal para interligar subestações, CCMs e redes backbone industriais.';
-                technicalInfo = '📊 Especificações: Velocidade até 100 Gbps | Distância até 40km (monomodo) | Imunidade EMI total';
+                technicalInfo = '📊 Especificações: Velocidade até 100 Gbps | Distância até 40km (monomodo) | Imunidade EMI total | Baixa atenuação';
                 badgesHtml = `
                     <span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
-                    <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto (conversores)</span>
-                    <span class="badge badge-purple">🔌 Conectores SC/LC / E2000</span>
-                    <span class="badge badge-yellow">🌍 Longa distância e alta largura de banda</span>
+                    <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto (conversores/SFP)</span>
+                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">🔌 Conectores SC/LC / E2000</span>
+                    <span class="badge bg-yellow-900/40 text-yellow-300 border-yellow-600/50">🌍 Longa distância e alta largura de banda</span>
                 `;
             }
             else if (cardType === 'wireless') {
                 title = '🔹 Rede Sem Fio (Wireless Industrial)';
-                imageSrc = 'imagens/wireless.jpg';
+                imageSrc = IMAGE_URLS.wireless;
                 description = 'Rede sem fio. Usado para monitorar sensores que ficam em locais móveis ou de difícil acesso, como pontes rolantes, AGVs, robôs móveis e telemetria. Necessita planejamento de canais e pontos de acesso industriais robustos contra interferências.';
-                technicalInfo = '📊 Especificações: Padrões Wi-Fi 6 / 5G / LoRa | Alcance típico 100m (indoor) | Latência variável';
+                technicalInfo = '📊 Especificações: Padrões Wi-Fi 6 / 5G / LoRaWAN | Alcance típico 100m (indoor) | Latência variável | MIMO disponível';
                 badgesHtml = `
                     <span class="badge badge-green">🏃 Mobilidade: Máxima</span>
                     <span class="badge bg-amber-950/40 text-amber-300 border-amber-700">⚠️ Sujeito a Barreiras e Reflexões</span>
                     <span class="badge badge-cyan">🔒 Segurança: WPA2-Enterprise / 802.1X</span>
-                    <span class="badge badge-purple">📡 Ideal para AGVs e sensores rotativos</span>
+                    <span class="badge bg-purple-900/40 text-purple-300 border-purple-500/50">📡 Ideal para AGVs e sensores rotativos</span>
                 `;
             }
             
-            // Preenche o painel
+            // Preenche o painel com os dados
             detailTitleSpan.innerHTML = title;
             detailImage.src = imageSrc;
             detailImage.alt = `Ilustração de ${title}`;
-            // Fallback caso a imagem não exista na pasta
+            // Tratamento de erro caso a imagem não carregue
             detailImage.onerror = function() {
-                this.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem:+Adicione+na+pasta+imagens/';
-                this.alt = 'Imagem não encontrada - crie a pasta imagens/ com as fotos';
+                this.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem+Temporariamente+Indisponível';
+                this.alt = 'Falha ao carregar imagem';
             };
             detailDescriptionDiv.innerHTML = description;
             detailTechnicalDiv.innerHTML = technicalInfo;
             detailBadgesDiv.innerHTML = badgesHtml;
             
-            // Exibe o painel com animação e scroll suave
+            // Exibe o painel com animação suave
             detailPanel.classList.remove('hidden');
             detailPanel.classList.add('fade-in');
-            detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Scroll suave até o painel para melhor experiência
+            setTimeout(() => {
+                detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
         }
         
-        // Eventos de clique nos cards (agora somente com título e ícone)
+        // Eventos de clique nos cards (apenas título e ícone)
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -500,7 +501,7 @@
         btnBarramento.addEventListener('click', () => renderTopology('barramento'));
         btnEstrela.addEventListener('click', () => renderTopology('estrela'));
         
-        // Inicialização para simulador
+        // Observer para garantir que o simulador carregue ao mudar de aba
         const observer = new MutationObserver(() => {
             if (!contentSimulador.classList.contains('hidden') && (!topologyDisplayDiv.innerHTML || topologyDisplayDiv.innerHTML.trim() === '')) {
                 renderTopology('barramento');
