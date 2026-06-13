@@ -2,254 +2,82 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Guia Visual de Redes para Automação v3 | Industrial Tech</title>
-    <!-- Tailwind CSS via CDN -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Visual de Redes v3 | Industrial Tech</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-        body {
-            background-color: #0E1217;
-        }
-        /* Efeito de elevação nos cards */
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-            cursor: pointer;
-        }
-        .card-hover:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 255, 0.25);
-        }
-        /* Card ativo (selecionado) */
-        .card-active {
-            border: 2px solid #00E5FF;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
-            background: #1A2C34;
-            transform: scale(1.02);
-        }
-        /* Scrollbar industrial */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1E262F;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2A9D8F;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00E5FF;
-        }
-        /* Badges */
-        .badge {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            border: 1px solid;
-        }
-        .badge-green {
-            border-color: rgba(16, 185, 129, 0.5);
-            color: #6EE7B7;
-            background: rgba(6, 78, 59, 0.4);
-        }
-        .badge-cyan {
-            border-color: rgba(0, 229, 255, 0.5);
-            color: #67E8F9;
-            background: rgba(8, 145, 178, 0.3);
-        }
-        .badge-yellow {
-            border-color: rgba(245, 158, 11, 0.5);
-            color: #FCD34D;
-            background: rgba(120, 53, 15, 0.4);
-        }
-        .badge-purple {
-            border-color: rgba(168, 85, 247, 0.5);
-            color: #D8B4FE;
-            background: rgba(107, 33, 168, 0.3);
-        }
-        /* Animações */
-        .fade-in {
-            animation: fadeSlideUp 0.35s ease-out;
-        }
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* Botões de navegação */
-        button.topo-btn-active {
-            border-bottom: 2px solid #00E5FF;
-            color: #00E5FF;
-            background: #1A2C34;
-        }
-        button.topo-btn-inactive {
-            color: #C0D4E6;
-            border-bottom: 2px solid transparent;
-        }
-        button.topo-btn-inactive:hover {
-            background: #1F2A32;
-            border-bottom: 2px solid #2A9D8F;
-            color: #E6F7FF;
-        }
-        /* Versão 3.0 Badge */
-        .version-badge {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: #D1FAE5;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.2rem 0.6rem;
-            border-radius: 9999px;
-            letter-spacing: 0.5px;
-            border: 1px solid #34D399;
-            box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
-            backdrop-filter: blur(2px);
-        }
-        /* Simulador de topologia */
-        .network-node {
-            transition: all 0.2s;
-            box-shadow: 0 0 0 1px rgba(0,255,200,0.3), 0 2px 6px rgba(0,0,0,0.4);
-        }
-        .switch-node {
-            background: #0D3B66;
-            border: 2px solid #00E5FF;
-            box-shadow: 0 0 8px #00e5ff60;
-        }
-        .machine-node {
-            background: #1E6F5C;
-            border: 1px solid #2A9D8F;
-        }
-        .bus-line {
-            background: linear-gradient(90deg, #5E8B7E, #9BB8AE);
-            height: 4px;
-            border-radius: 4px;
-        }
-        .mini-topology {
-            background: #0A0F14;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: inset 0 0 0 1px #2E3A44, 0 10px 20px -5px black;
-        }
-        /* Estilo do painel de detalhes */
-        .detail-panel {
-            background: linear-gradient(135deg, #16222B 0%, #0F1820 100%);
-            border: 1px solid #2E4A5C;
-            border-radius: 1rem;
-            transition: all 0.3s;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-        .detail-panel img {
-            max-height: 260px;
-            object-fit: cover;
-            border-radius: 0.75rem;
-            width: 100%;
-            border: 2px solid rgba(0, 229, 255, 0.2);
-            transition: all 0.3s;
-        }
-        .detail-panel img:hover {
-            border-color: rgba(0, 229, 255, 0.6);
-            transform: scale(1.01);
-        }
-        .close-detail-btn {
-            transition: all 0.2s;
-        }
-        .close-detail-btn:hover {
-            background: rgba(229, 62, 62, 0.2);
-            color: #F87171;
-            transform: scale(1.1);
-        }
-        @media (max-width: 768px) {
-            .detail-panel img {
-                max-height: 200px;
-            }
-        }
+        * { font-family: 'Inter', system-ui, sans-serif; }
+        body { background-color: #0E1217; }
+        .card-hover { transition: all 0.3s cubic-bezier(0.2,0,0,1); cursor: pointer; }
+        .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,255,255,0.25); }
+        .card-active { border: 2px solid #00E5FF; box-shadow: 0 0 15px rgba(0,229,255,0.3); background: #1A2C34; transform: scale(1.02); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1E262F; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #2A9D8F; border-radius: 10px; }
+        .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 9999px; border: 1px solid; }
+        .badge-green { border-color: rgba(16,185,129,0.5); color: #6EE7B7; background: rgba(6,78,59,0.4); }
+        .badge-cyan { border-color: rgba(0,229,255,0.5); color: #67E8F9; background: rgba(8,145,178,0.3); }
+        .badge-yellow { border-color: rgba(245,158,11,0.5); color: #FCD34D; background: rgba(120,53,15,0.4); }
+        .badge-purple { border-color: rgba(168,85,247,0.5); color: #D8B4FE; background: rgba(107,33,168,0.3); }
+        .fade-in { animation: fadeSlideUp 0.35s ease-out; }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        button.topo-btn-active { border-bottom: 2px solid #00E5FF; color: #00E5FF; background: #1A2C34; }
+        button.topo-btn-inactive { color: #C0D4E6; border-bottom: 2px solid transparent; }
+        button.topo-btn-inactive:hover { background: #1F2A32; border-bottom: 2px solid #2A9D8F; color: #E6F7FF; }
+        .version-badge { background: linear-gradient(135deg, #059669, #047857); color: #D1FAE5; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid #34D399; box-shadow: 0 0 8px rgba(52,211,153,0.3); }
+        .network-node { transition: all 0.2s; box-shadow: 0 0 0 1px rgba(0,255,200,0.3), 0 2px 6px rgba(0,0,0,0.4); }
+        .switch-node { background: #0D3B66; border: 2px solid #00E5FF; box-shadow: 0 0 8px #00e5ff60; }
+        .machine-node { background: #1E6F5C; border: 1px solid #2A9D8F; }
+        .bus-line { background: linear-gradient(90deg, #5E8B7E, #9BB8AE); height: 4px; border-radius: 4px; }
+        .mini-topology { background: #0A0F14; border-radius: 1rem; padding: 1.5rem; box-shadow: inset 0 0 0 1px #2E3A44, 0 10px 20px -5px black; }
+        .detail-panel { background: linear-gradient(135deg, #16222B 0%, #0F1820 100%); border: 1px solid #2E4A5C; border-radius: 1rem; transition: all 0.3s; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); }
+        .detail-panel img { max-height: 260px; object-fit: cover; border-radius: 0.75rem; width: 100%; border: 2px solid rgba(0,229,255,0.2); transition: all 0.3s; }
+        .detail-panel img:hover { border-color: rgba(0,229,255,0.6); transform: scale(1.01); }
+        .close-detail-btn { transition: all 0.2s; }
+        .close-detail-btn:hover { background: rgba(229,62,62,0.2); color: #F87171; transform: scale(1.1); }
+        @media (max-width: 768px) { .detail-panel img { max-height: 200px; } }
     </style>
 </head>
-<body class="text-gray-200 antialiased">
-
+<body class="text-gray-200">
     <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-        <!-- Header industrial com badge v3 -->
         <div class="mb-8 border-b border-cyan-800/40 pb-4 flex flex-wrap justify-between items-end">
             <div class="flex items-center gap-3 flex-wrap">
                 <div>
                     <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">⚙️ Guia Visual de Redes</h1>
                     <p class="text-gray-400 text-sm font-mono mt-1">para Automação Industrial — técnicos e eletricistas iniciantes</p>
                 </div>
-                <!-- Badge de versão v3 em destaque -->
-                <div class="version-badge ml-2 md:ml-4 shadow-lg">
-                    🚀 VERSÃO 3.0
-                </div>
+                <div class="version-badge ml-2 md:ml-4 shadow-lg">🚀 VERSÃO v3</div>
             </div>
             <div class="text-xs text-cyan-400/70 font-mono mt-2 md:mt-0">SCADA READY • PROTOCOLO INDUSTRIAL</div>
         </div>
 
-        <!-- Navegação Abas -->
         <div class="flex gap-2 md:gap-4 border-b border-gray-800 mb-8">
-            <button id="tabMeiosBtn" class="tab-button px-5 py-2.5 text-base font-semibold rounded-t-xl transition-all duration-200 flex items-center gap-2 topo-btn-active">
-                <span>🔌</span> Meios Físicos (Cabos)
-            </button>
-            <button id="tabSimuladorBtn" class="tab-button px-5 py-2.5 text-base font-semibold rounded-t-xl transition-all duration-200 flex items-center gap-2 topo-btn-inactive">
-                <span>📐</span> Simulador de Topologia
-            </button>
+            <button id="tabMeiosBtn" class="tab-button px-5 py-2.5 text-base font-semibold rounded-t-xl transition-all duration-200 flex items-center gap-2 topo-btn-active"><span>🔌</span> Meios Físicos (Cabos)</button>
+            <button id="tabSimuladorBtn" class="tab-button px-5 py-2.5 text-base font-semibold rounded-t-xl transition-all duration-200 flex items-center gap-2 topo-btn-inactive"><span>📐</span> Simulador de Topologia</button>
         </div>
 
-        <!-- CONTEÚDO DA ABA 1: MEIOS FÍSICOS -->
         <div id="tabMeiosContent" class="tab-content fade-in">
-            <!-- Grid de 3 cards - APENAS título e ícone (RS-485 agora no lugar de Wireless) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="cardsGrid">
-                <!-- Card Par Trançado -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                 <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="par">
-                    <div class="flex flex-col items-center gap-3">
-                        <span class="text-6xl">🪢</span>
-                        <h2 class="text-xl font-bold text-cyan-300 mt-2">Par Trançado</h2>
-                    </div>
+                    <div class="flex flex-col items-center gap-3"><span class="text-6xl">🪢</span><h2 class="text-xl font-bold text-cyan-300 mt-2">Par Trançado</h2></div>
                 </div>
-                <!-- Card Fibra Óptica -->
                 <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="fibra">
-                    <div class="flex flex-col items-center gap-3">
-                        <span class="text-6xl">🔮</span>
-                        <h2 class="text-xl font-bold text-cyan-300 mt-2">Fibra Óptica</h2>
-                    </div>
+                    <div class="flex flex-col items-center gap-3"><span class="text-6xl">🔮</span><h2 class="text-xl font-bold text-cyan-300 mt-2">Fibra Óptica</h2></div>
                 </div>
-                <!-- Card Cabo RS-485 (substituindo Wireless) -->
                 <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="rs485">
-                    <div class="flex flex-col items-center gap-3">
-                        <span class="text-6xl">🔌</span>
-                        <h2 class="text-xl font-bold text-cyan-300 mt-2">Cabo RS-485</h2>
-                    </div>
+                    <div class="flex flex-col items-center gap-3"><span class="text-6xl">🔌</span><h2 class="text-xl font-bold text-cyan-300 mt-2">Cabo RS-485</h2></div>
                 </div>
             </div>
 
-            <!-- Painel de Detalhes (inicia oculto) -->
             <div id="detailPanel" class="detail-panel mt-8 hidden transition-all duration-300">
                 <div class="p-5 md:p-6">
                     <div class="flex justify-between items-start mb-5">
                         <h3 id="detailTitle" class="text-2xl md:text-3xl font-bold text-cyan-300 flex items-center gap-2"></h3>
                         <button id="closeDetailBtn" class="close-detail-btn text-gray-400 hover:text-red-400 text-2xl leading-5 w-8 h-8 rounded-full flex items-center justify-center transition-all font-bold">✕</button>
                     </div>
-                    
-                    <!-- Layout responsivo: imagem + conteúdo -->
                     <div class="flex flex-col lg:flex-row gap-6">
-                        <!-- Coluna da Imagem (links do Wikimedia) -->
-                        <div class="lg:w-1/2">
-                            <img id="detailImage" src="" alt="Imagem ilustrativa do cabo" class="rounded-xl shadow-2xl w-full object-cover bg-black/40">
-                            <p class="text-center text-xs text-gray-500 mt-2 font-mono">📸 Imagem referencial do equipamento</p>
-                        </div>
-                        
-                        <!-- Coluna do Conteúdo Textual -->
+                        <div class="lg:w-1/2"><img id="detailImage" src="" alt="Imagem do cabo" class="rounded-xl shadow-2xl w-full object-cover bg-black/40"></div>
                         <div class="lg:w-1/2 flex flex-col justify-between">
                             <div>
                                 <div id="detailDescription" class="text-gray-200 text-base leading-relaxed mb-5"></div>
@@ -262,18 +90,12 @@
             </div>
         </div>
 
-        <!-- CONTEÚDO DA ABA 2: SIMULADOR DE TOPOLOGIA -->
         <div id="tabSimuladorContent" class="tab-content hidden fade-in">
             <div class="bg-[#11161C] rounded-2xl border border-gray-800 p-6 md:p-8">
                 <div class="flex flex-wrap gap-5 justify-center md:justify-start mb-10">
-                    <button id="btnBarramento" class="px-6 py-3 rounded-xl font-bold text-base transition-all bg-[#1C2A34] hover:bg-cyan-900/50 text-cyan-200 border border-cyan-500/40 shadow-lg flex items-center gap-2">
-                        <span class="text-xl">🔗</span> Layout em Barramento
-                    </button>
-                    <button id="btnEstrela" class="px-6 py-3 rounded-xl font-bold text-base transition-all bg-[#1C2A34] hover:bg-emerald-900/40 text-emerald-200 border border-emerald-500/40 shadow-lg flex items-center gap-2">
-                        <span class="text-xl">⭐</span> Layout em Estrela
-                    </button>
+                    <button id="btnBarramento" class="px-6 py-3 rounded-xl font-bold text-base transition-all bg-[#1C2A34] hover:bg-cyan-900/50 text-cyan-200 border border-cyan-500/40 shadow-lg flex items-center gap-2"><span class="text-xl">🔗</span> Layout em Barramento</button>
+                    <button id="btnEstrela" class="px-6 py-3 rounded-xl font-bold text-base transition-all bg-[#1C2A34] hover:bg-emerald-900/40 text-emerald-200 border border-emerald-500/40 shadow-lg flex items-center gap-2"><span class="text-xl">⭐</span> Layout em Estrela</button>
                 </div>
-                
                 <div id="topologyDisplay" class="mini-topology transition-all"></div>
                 <div id="topologyDetails" class="mt-6 bg-[#0C1117] rounded-xl p-5 border-l-4 border-cyan-500/70"></div>
             </div>
@@ -281,266 +103,121 @@
     </div>
 
     <script>
-        // ------------------- Controle de abas -------------------
         const tabMeiosBtn = document.getElementById('tabMeiosBtn');
         const tabSimuladorBtn = document.getElementById('tabSimuladorBtn');
         const contentMeios = document.getElementById('tabMeiosContent');
         const contentSimulador = document.getElementById('tabSimuladorContent');
         
         function setActiveTab(tab) {
-            tabMeiosBtn.classList.remove('topo-btn-active');
-            tabMeiosBtn.classList.add('topo-btn-inactive');
-            tabSimuladorBtn.classList.remove('topo-btn-active');
-            tabSimuladorBtn.classList.add('topo-btn-inactive');
-            
+            tabMeiosBtn.classList.remove('topo-btn-active', 'topo-btn-inactive');
+            tabSimuladorBtn.classList.remove('topo-btn-active', 'topo-btn-inactive');
             if (tab === 'meios') {
-                tabMeiosBtn.classList.remove('topo-btn-inactive');
                 tabMeiosBtn.classList.add('topo-btn-active');
+                tabSimuladorBtn.classList.add('topo-btn-inactive');
                 contentMeios.classList.remove('hidden');
                 contentSimulador.classList.add('hidden');
             } else {
-                tabSimuladorBtn.classList.remove('topo-btn-inactive');
                 tabSimuladorBtn.classList.add('topo-btn-active');
+                tabMeiosBtn.classList.add('topo-btn-inactive');
                 contentMeios.classList.add('hidden');
                 contentSimulador.classList.remove('hidden');
-                const displayDiv = document.getElementById('topologyDisplay');
-                if (displayDiv && displayDiv.innerHTML.trim() === '') {
-                    renderTopology('barramento');
-                }
+                if (document.getElementById('topologyDisplay').innerHTML.trim() === '') renderTopology('barramento');
             }
         }
         
         tabMeiosBtn.addEventListener('click', () => setActiveTab('meios'));
         tabSimuladorBtn.addEventListener('click', () => setActiveTab('simulador'));
         
-        // ------------------- Lógica dos Cards com URLs do Wikimedia -------------------
         const cards = document.querySelectorAll('.card-item');
         const detailPanel = document.getElementById('detailPanel');
-        const detailTitleSpan = document.getElementById('detailTitle');
+        const detailTitle = document.getElementById('detailTitle');
         const detailImage = document.getElementById('detailImage');
-        const detailDescriptionDiv = document.getElementById('detailDescription');
-        const detailTechnicalDiv = document.getElementById('detailTechnical');
-        const detailBadgesDiv = document.getElementById('detailBadges');
-        const closeDetailBtn = document.getElementById('closeDetailBtn');
+        const detailDescription = document.getElementById('detailDescription');
+        const detailTechnical = document.getElementById('detailTechnical');
+        const detailBadges = document.getElementById('detailBadges');
+        const closeBtn = document.getElementById('closeDetailBtn');
         
-        function removeActiveClass() {
-            cards.forEach(card => {
-                card.classList.remove('card-active');
-                card.style.transform = '';
-            });
-        }
-        
-        // URLs do Wikimedia para imagens precisas e profissionais
-        const IMAGE_URLS = {
-            par: 'https://upload.wikimedia.org/wikipedia/commons/2/23/Two_twisted_pairs_of_a_UTP_cable_-_blue_white.jpg',
-            fibra: 'https://upload.wikimedia.org/wikipedia/commons/d/df/Fiber_optic_patch_cords.jpg',
-            rs485: 'https://upload.wikimedia.org/wikipedia/commons/c/cd/Twisted_pair_shielded_cable.jpg'
+        const IMAGES = {
+            par: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80',
+            fibra: 'https://images.unsplash.com/photo-1601524909162-be87252be298?w=500&q=80',
+            rs485: 'https://images.unsplash.com/photo-1581092334651-ddf26d9aae9d?w=500&q=80'
         };
         
-        function showCardDetails(cardType) {
-            let title = '';
-            let imageSrc = '';
-            let description = '';
-            let technicalInfo = '';
-            let badgesHtml = '';
-            
-            if (cardType === 'par') {
-                title = '🔹 Par Trançado (U/FTP, CAT5e/CAT6)';
-                imageSrc = IMAGE_URLS.par;
-                description = 'Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor, além de conectar switches, IHMs e dispositivos de campo em distâncias de até 100 metros. É a base das redes industriais modernas para comunicação célere e confiável.';
-                technicalInfo = '📊 Especificações: Impedância 100Ω | Taxa até 1 Gbps | Distância máx. 100m | Blindagem disponível (STP)';
-                badgesHtml = `
-                    <span class="badge badge-green">💰 Custo: Baixo</span>
-                    <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
-                    <span class="badge badge-purple">🔌 Conector RJ45 / M12</span>
-                    <span class="badge badge-yellow">🏭 Aplicação: CLPs, IHMs, redes locais</span>
-                `;
-            } 
-            else if (cardType === 'fibra') {
-                title = '🔹 Fibra Óptica (Monomodo / Multimodo)';
-                imageSrc = IMAGE_URLS.fibra;
-                description = 'O cabo de vidro. Usado para levar dados a longas distâncias na fábrica sem sofrer com a interferência dos motores elétricos, inversores e campos eletromagnéticos severos. Ideal para interligar subestações, CCMs e redes backbone industriais.';
-                technicalInfo = '📊 Especificações: Velocidade até 100 Gbps | Distância até 40km (monomodo) | Imunidade EMI total | Baixa atenuação';
-                badgesHtml = `
-                    <span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
-                    <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto (conversores/SFP)</span>
-                    <span class="badge badge-purple">🔌 Conectores SC/LC / E2000</span>
-                    <span class="badge badge-yellow">🌍 Longa distância e alta largura de banda</span>
-                `;
-            }
-            else if (cardType === 'rs485') {
-                title = '🔹 Cabo RS-485 (Padrão Físico para Modbus RTU / Profibus)';
-                imageSrc = IMAGE_URLS.rs485;
-                description = 'Cabo de dois fios trançados com blindagem (A e B). Muito utilizado na indústria para conectar CLPs a inversores de frequência e multimedidores a longas distâncias, com alta imunidade a ruídos.';
-                technicalInfo = '📊 Especificações: Par trançado blindado | Impedância 120Ω | Transmissão diferencial | Suporta até 32 dispositivos por barramento';
-                badgesHtml = `
-                    <span class="badge badge-green">🔄 Protocolos: Modbus RTU / Profibus</span>
-                    <span class="badge badge-cyan">📏 Distância: até 1200m (baixa velocidade)</span>
-                    <span class="badge badge-purple">🔗 Topologia: Barramento (Daisy-chain)</span>
-                    <span class="badge badge-yellow">⚙️ Aplicação: CLPs, inversores, sensores remotos</span>
-                `;
-            }
-            
-            // Preenche o painel com os dados
-            detailTitleSpan.innerHTML = title;
-            detailImage.src = imageSrc;
-            detailImage.alt = `Ilustração de ${title}`;
-            // Tratamento de erro caso a imagem não carregue
-            detailImage.onerror = function() {
-                this.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem+Temporariamente+Indisponível';
-                this.alt = 'Falha ao carregar imagem';
-            };
-            detailDescriptionDiv.innerHTML = description;
-            detailTechnicalDiv.innerHTML = technicalInfo;
-            detailBadgesDiv.innerHTML = badgesHtml;
-            
-            // Exibe o painel com animação suave
-            detailPanel.classList.remove('hidden');
-            detailPanel.classList.add('fade-in');
-            // Scroll suave até o painel para melhor experiência
-            setTimeout(() => {
-                detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+        function removeActiveClass() {
+            cards.forEach(c => c.classList.remove('card-active'));
         }
         
-        // Eventos de clique nos cards (apenas título e ícone)
+        function showDetails(type) {
+            let title, imageSrc, description, technical, badges;
+            if (type === 'par') {
+                title = '🔹 Par Trançado (U/FTP, CAT5e/CAT6)';
+                imageSrc = IMAGES.par;
+                description = 'Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor, conectando switches, IHMs e dispositivos de campo em até 100 metros. Base das redes industriais modernas.';
+                technical = '📊 Especificações: Impedância 100Ω | Taxa até 1 Gbps | Distância máx. 100m | Blindagem STP';
+                badges = `<span class="badge badge-green">💰 Custo: Baixo</span><span class="badge badge-cyan">⚡ Flexibilidade: Alta</span><span class="badge badge-purple">🔌 Conector RJ45 / M12</span><span class="badge badge-yellow">🏭 CLPs, IHMs, redes locais</span>`;
+            } else if (type === 'fibra') {
+                title = '🔹 Fibra Óptica (Monomodo / Multimodo)';
+                imageSrc = IMAGES.fibra;
+                description = 'Cabo de vidro para longas distâncias, imune a interferências de motores e inversores. Ideal para backbone industrial, subestações e CCMs.';
+                technical = '📊 Especificações: Velocidade até 100 Gbps | Distância até 40km | Imunidade EMI total | Baixa atenuação';
+                badges = `<span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span><span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto</span><span class="badge badge-purple">🔌 Conectores SC/LC</span><span class="badge badge-yellow">🌍 Longa distância e alta banda</span>`;
+            } else if (type === 'rs485') {
+                title = '🔹 Cabo RS-485 (Padrão Físico para Modbus RTU / Profibus)';
+                imageSrc = IMAGES.rs485;
+                description = 'Cabo de dois fios trançados com blindagem (A e B). Muito utilizado na indústria para conectar CLPs a inversores de frequência, multimedidores e sensores remotos, oferecendo alta imunidade a ruídos e comunicação bidirecional em longas distâncias.';
+                technical = '📊 Especificações: Par trançado blindado | Impedância 120Ω | Transmissão diferencial | Suporta até 32 dispositivos';
+                badges = `<span class="badge badge-green">🔄 Protocolos: Modbus RTU / Profibus</span><span class="badge badge-cyan">📏 Distância: até 1200m</span><span class="badge badge-purple">🔗 Topologia: Barramento</span><span class="badge badge-yellow">⚙️ CLPs, inversores, sensores remotos</span>`;
+            }
+            
+            detailTitle.innerHTML = title;
+            detailImage.src = imageSrc;
+            detailImage.onerror = () => { detailImage.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem+Indisponível'; };
+            detailDescription.innerHTML = description;
+            detailTechnical.innerHTML = technical;
+            detailBadges.innerHTML = badges;
+            detailPanel.classList.remove('hidden');
+            detailPanel.classList.add('fade-in');
+            setTimeout(() => detailPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+        }
+        
         cards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const cardType = card.getAttribute('data-card-type');
+            card.addEventListener('click', () => {
+                const type = card.getAttribute('data-card-type');
                 removeActiveClass();
                 card.classList.add('card-active');
-                showCardDetails(cardType);
+                showDetails(type);
             });
         });
         
-        // Fechar painel de detalhes
-        closeDetailBtn.addEventListener('click', () => {
+        closeBtn.addEventListener('click', () => {
             detailPanel.classList.add('hidden');
             removeActiveClass();
         });
         
-        // ------------------- SIMULADOR DE TOPOLOGIA -------------------
         const btnBarramento = document.getElementById('btnBarramento');
         const btnEstrela = document.getElementById('btnEstrela');
-        const topologyDisplayDiv = document.getElementById('topologyDisplay');
-        const topologyDetailsDiv = document.getElementById('topologyDetails');
+        const topologyDisplay = document.getElementById('topologyDisplay');
+        const topologyDetails = document.getElementById('topologyDetails');
         
         function renderTopology(type) {
             if (type === 'barramento') {
-                const visualHtml = `
-                    <div class="flex flex-col items-center">
-                        <div class="text-xs font-mono text-cyan-400 mb-2">🔷 TOPOLOGIA EM BARRA (Linear) - Bus</div>
-                        <div class="relative w-full flex justify-center items-center gap-1 flex-wrap">
-                            <div class="flex items-center gap-1 sm:gap-3 bg-[#0D141A] p-4 rounded-xl w-full justify-center flex-wrap">
-                                <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M1</div>
-                                <div class="bus-line w-8 sm:w-12"></div>
-                                <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M2</div>
-                                <div class="bus-line w-8 sm:w-12"></div>
-                                <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M3</div>
-                                <div class="bus-line w-8 sm:w-12"></div>
-                                <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M4</div>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 text-sm mt-4 max-w-lg text-center">Cabo principal compartilhado → máquinas conectadas em série (como vagões de trem).</p>
-                    </div>
-                `;
-                const details = {
-                    title: "📡 Topologia Barramento (Bus)",
-                    description: "As máquinas são ligadas uma na outra em linha (como vagões de trem). Se o cabo partir no meio, metade da fábrica para. Utilizado em redes mais antigas ou em aplicações específicas como RS-485/Modbus.",
-                    advantages: [
-                        "✅ Cabo econômico para pequenas distâncias",
-                        "✅ Simples de instalar em linha de produção sequencial",
-                        "✅ Baixo custo de infraestrutura passiva"
-                    ],
-                    disadvantages: [
-                        "❌ Ponto único de falha: quebra no cabo afeta toda a rede após a ruptura",
-                        "❌ Baixa escalabilidade e difícil manutenção",
-                        "❌ Problemas de reflexão e terminação exigem cuidados"
-                    ]
-                };
-                topologyDisplayDiv.innerHTML = visualHtml;
-                topologyDetailsDiv.innerHTML = `
-                    <h3 class="text-xl font-bold text-cyan-300 mb-3">${details.title}</h3>
-                    <p class="text-gray-300 text-sm md:text-base mb-4">${details.description}</p>
-                    <div class="grid md:grid-cols-2 gap-4 mt-2">
-                        <div class="bg-[#14222B] p-4 rounded-lg border-l-4 border-emerald-400">
-                            <h4 class="font-bold text-emerald-300 flex items-center gap-1">📈 Vantagens</h4>
-                            <ul class="list-disc list-inside text-gray-300 text-sm mt-2 space-y-1">${details.advantages.map(a => `<li>${a}</li>`).join('')}</ul>
-                        </div>
-                        <div class="bg-[#1C1A24] p-4 rounded-lg border-l-4 border-rose-400">
-                            <h4 class="font-bold text-rose-300 flex items-center gap-1">⚠️ Desvantagens</h4>
-                            <ul class="list-disc list-inside text-gray-300 text-sm mt-2 space-y-1">${details.disadvantages.map(d => `<li>${d}</li>`).join('')}</ul>
-                        </div>
-                    </div>
-                `;
-            } 
-            else if (type === 'estrela') {
-                const visualHtml = `
-                    <div class="flex flex-col items-center">
-                        <div class="text-xs font-mono text-emerald-300 mb-2">⭐ TOPOLOGIA EM ESTRELA (Switch Central)</div>
-                        <div class="relative flex justify-center min-h-[200px]">
-                            <div class="relative flex flex-wrap justify-center items-center gap-6 md:gap-10 bg-[#0D141A] p-6 rounded-xl w-full">
-                                <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                                    <div class="switch-node w-20 h-20 rounded-xl flex items-center justify-center font-bold text-cyan-100 shadow-2xl">SWITCH</div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-x-14 gap-y-12 mt-8 mb-8 relative" style="width:280px">
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M1</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M2</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M3</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M4</div>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-gray-300 text-sm mt-4 text-center">Todas as máquinas ligam a um Switch central. Falha em um ponto não afeta os demais.</p>
-                    </div>
-                `;
-                const details = {
-                    title: "⭐ Topologia Estrela (Star)",
-                    description: "Todas as máquinas ligam em um aparelho central (Switch Industrial). Se uma máquina estragar, as outras continuam funcionando normalmente. É a topologia mais comum em redes Ethernet industriais modernas.",
-                    advantages: [
-                        "✅ Isolamento de falhas: defeito em um dispositivo não derruba os outros",
-                        "✅ Alta escalabilidade e fácil expansão com switches adicionais",
-                        "✅ Diagnóstico simplificado, tráfego eficiente"
-                    ],
-                    disadvantages: [
-                        "❌ Dependência do switch central (se falhar toda a rede para)",
-                        "❌ Maior custo com switch e cabeamento estruturado",
-                        "❌ Distância limitada por enlace individual (100m Ethernet)"
-                    ]
-                };
-                topologyDisplayDiv.innerHTML = visualHtml;
-                topologyDetailsDiv.innerHTML = `
-                    <h3 class="text-xl font-bold text-cyan-300 mb-3">${details.title}</h3>
-                    <p class="text-gray-300 text-sm md:text-base mb-4">${details.description}</p>
-                    <div class="grid md:grid-cols-2 gap-4 mt-2">
-                        <div class="bg-[#14222B] p-4 rounded-lg border-l-4 border-emerald-400">
-                            <h4 class="font-bold text-emerald-300 flex items-center gap-1">📈 Vantagens</h4>
-                            <ul class="list-disc list-inside text-gray-300 text-sm mt-2 space-y-1">${details.advantages.map(a => `<li>${a}</li>`).join('')}</ul>
-                        </div>
-                        <div class="bg-[#1C1A24] p-4 rounded-lg border-l-4 border-rose-400">
-                            <h4 class="font-bold text-rose-300 flex items-center gap-1">⚠️ Desvantagens</h4>
-                            <ul class="list-disc list-inside text-gray-300 text-sm mt-2 space-y-1">${details.disadvantages.map(d => `<li>${d}</li>`).join('')}</ul>
-                        </div>
-                    </div>
-                `;
+                topologyDisplay.innerHTML = `<div class="flex flex-col items-center"><div class="text-xs font-mono text-cyan-400 mb-2">🔷 TOPOLOGIA EM BARRA (Linear)</div><div class="flex items-center gap-1 sm:gap-3 bg-[#0D141A] p-4 rounded-xl justify-center flex-wrap"><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M1</div><div class="bus-line w-8 sm:w-12"></div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M2</div><div class="bus-line w-8 sm:w-12"></div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M3</div><div class="bus-line w-8 sm:w-12"></div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M4</div></div><p class="text-gray-300 text-sm mt-4">Máquinas ligadas em série. Se o cabo partir, metade da fábrica para.</p></div>`;
+                topologyDetails.innerHTML = `<h3 class="text-xl font-bold text-cyan-300 mb-3">📡 Topologia Barramento</h3><p class="text-gray-300 text-sm mb-4">Máquinas ligadas em linha (como vagões). Se o cabo partir no meio, metade da fábrica para. Usado em RS-485/Modbus.</p><div class="grid md:grid-cols-2 gap-4"><div class="bg-[#14222B] p-4 rounded-lg border-l-4 border-emerald-400"><h4 class="font-bold text-emerald-300">📈 Vantagens</h4><ul class="list-disc list-inside text-gray-300 text-sm mt-2"><li>✅ Cabo econômico</li><li>✅ Instalação simples</li><li>✅ Baixo custo</li></ul></div><div class="bg-[#1C1A24] p-4 rounded-lg border-l-4 border-rose-400"><h4 class="font-bold text-rose-300">⚠️ Desvantagens</h4><ul class="list-disc list-inside text-gray-300 text-sm mt-2"><li>❌ Ponto único de falha</li><li>❌ Baixa escalabilidade</li><li>❌ Requer terminação</li></ul></div></div>`;
+            } else {
+                topologyDisplay.innerHTML = `<div class="flex flex-col items-center"><div class="text-xs font-mono text-emerald-300 mb-2">⭐ TOPOLOGIA EM ESTRELA</div><div class="relative flex justify-center min-h-[200px]"><div class="relative flex flex-wrap justify-center bg-[#0D141A] p-6 rounded-xl w-full"><div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"><div class="switch-node w-20 h-20 rounded-xl flex items-center justify-center font-bold">SWITCH</div></div><div class="grid grid-cols-2 gap-x-14 gap-y-12 my-8 relative" style="width:280px"><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M1</div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M2</div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M3</div><div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold">M4</div></div></div></div><p class="text-gray-300 text-sm mt-4">Todas as máquinas ligam a um Switch central. Falha em uma máquina não afeta as outras.</p></div>`;
+                topologyDetails.innerHTML = `<h3 class="text-xl font-bold text-cyan-300 mb-3">⭐ Topologia Estrela</h3><p class="text-gray-300 text-sm mb-4">Todas as máquinas ligam em um Switch central. Se uma máquina falha, as outras continuam operando. Topologia mais comum em Ethernet industrial.</p><div class="grid md:grid-cols-2 gap-4"><div class="bg-[#14222B] p-4 rounded-lg border-l-4 border-emerald-400"><h4 class="font-bold text-emerald-300">📈 Vantagens</h4><ul class="list-disc list-inside text-gray-300 text-sm mt-2"><li>✅ Isolamento de falhas</li><li>✅ Alta escalabilidade</li><li>✅ Diagnóstico fácil</li></ul></div><div class="bg-[#1C1A24] p-4 rounded-lg border-l-4 border-rose-400"><h4 class="font-bold text-rose-300">⚠️ Desvantagens</h4><ul class="list-disc list-inside text-gray-300 text-sm mt-2"><li>❌ Switch central falha para rede toda</li><li>❌ Maior custo de equipamento</li><li>❌ Distância limitada a 100m</li></ul></div></div>`;
             }
         }
         
         btnBarramento.addEventListener('click', () => renderTopology('barramento'));
         btnEstrela.addEventListener('click', () => renderTopology('estrela'));
         
-        // Observer para garantir que o simulador carregue ao mudar de aba
         const observer = new MutationObserver(() => {
-            if (!contentSimulador.classList.contains('hidden') && (!topologyDisplayDiv.innerHTML || topologyDisplayDiv.innerHTML.trim() === '')) {
-                renderTopology('barramento');
-            }
+            if (!contentSimulador.classList.contains('hidden') && topologyDisplay.innerHTML.trim() === '') renderTopology('barramento');
         });
         observer.observe(contentSimulador, { attributes: true, attributeFilter: ['class'] });
         
-        if (!contentSimulador.classList.contains('hidden') && topologyDisplayDiv.innerHTML.trim() === '') {
-            renderTopology('barramento');
-        }
+        if (!contentSimulador.classList.contains('hidden') && topologyDisplay.innerHTML.trim() === '') renderTopology('barramento');
     </script>
 </body>
 </html>
