@@ -6,25 +6,32 @@
     <title>Guia Visual de Redes para Automação | Industrial Tech</title>
     <!-- Tailwind CSS via CDN + Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Inter + JetBrains Mono para toque técnico) -->
+    <!-- Google Fonts (Inter + JetBrains Mono) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <!-- Customize Tailwind theme (dark mode/industrial) -->
+    <!-- Custom CSS para efeitos industriais -->
     <style>
         * {
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         body {
-            background-color: #0E1217; /* grafite escuro industrial */
+            background-color: #0E1217;
         }
-        /* Efeitos customizados para cards e simulação visual */
+        /* Efeito de elevação nos cards */
         .card-hover {
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
         }
         .card-hover:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 255, 0.25);
         }
-        /* Scrollbar personalizada (industrial) */
+        /* Card ativo (selecionado) */
+        .card-active {
+            border: 2px solid #00E5FF;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            background: #1A2C34;
+        }
+        /* Scrollbar industrial */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -40,31 +47,55 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #00E5FF;
         }
-        /* Badges genericas */
+        /* Badges */
         .badge {
-            @apply inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full border;
-        }
-        .badge-cyan {
-            @apply border-cyan-400/70 text-cyan-300 bg-cyan-950/40;
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 1px solid;
         }
         .badge-green {
-            @apply border-emerald-400/70 text-emerald-300 bg-emerald-950/40;
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #6EE7B7;
+            background: rgba(6, 78, 59, 0.4);
         }
-        /* animacao suave para o conteudo da aba e painel simulador */
+        .badge-cyan {
+            border-color: rgba(0, 229, 255, 0.5);
+            color: #67E8F9;
+            background: rgba(8, 145, 178, 0.3);
+        }
+        /* Animações */
         .fade-in {
             animation: fadeSlideUp 0.3s ease-out;
         }
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(15px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        /* Representação visual nodes */
+        /* Botões de navegação */
+        button.topo-btn-active {
+            border-bottom: 2px solid #00E5FF;
+            color: #00E5FF;
+            background: #1A2C34;
+        }
+        button.topo-btn-inactive {
+            color: #C0D4E6;
+            border-bottom: 2px solid transparent;
+        }
+        button.topo-btn-inactive:hover {
+            background: #1F2A32;
+            border-bottom: 2px solid #2A9D8F;
+            color: #E6F7FF;
+        }
+        /* Simulador de topologia mini representação */
         .network-node {
             transition: all 0.2s;
             box-shadow: 0 0 0 1px rgba(0,255,200,0.3), 0 2px 6px rgba(0,0,0,0.4);
@@ -83,45 +114,46 @@
             height: 4px;
             border-radius: 4px;
         }
-        /* Tooltip / modal como card explicativo expandido - usamos expansão inline (detalhe) */
-        .explanatory-text {
-            background: #11181F;
-            border-left: 4px solid #00E5FF;
-            transition: all 0.2s;
-        }
-        button.topo-btn-active {
-            border-bottom: 2px solid #00E5FF;
-            color: #00E5FF;
-            background: #1A2C34;
-        }
-        button.topo-btn-inactive {
-            color: #C0D4E6;
-            border-bottom: 2px solid transparent;
-        }
-        button.topo-btn-inactive:hover {
-            background: #1F2A32;
-            border-bottom: 2px solid #2A9D8F;
-            color: #E6F7FF;
-        }
-        /* Responsividade grid */
-        @media (max-width: 780px) {
-            .grid-cols-3 {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
         .mini-topology {
             background: #0A0F14;
             border-radius: 1rem;
             padding: 1.5rem;
             box-shadow: inset 0 0 0 1px #2E3A44, 0 10px 20px -5px black;
         }
+        /* Responsividade do grid de cards */
+        @media (max-width: 780px) {
+            .grid-cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+        /* Estilo do painel de detalhes */
+        .detail-panel {
+            background: #16222B;
+            border: 1px solid #2E4A5C;
+            border-radius: 1rem;
+            transition: all 0.2s;
+        }
+        .detail-panel img {
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            width: 100%;
+        }
+        .close-detail-btn {
+            transition: all 0.2s;
+        }
+        .close-detail-btn:hover {
+            background: rgba(229, 62, 62, 0.2);
+            color: #F87171;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="text-gray-200 antialiased">
 
     <div class="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
-        <!-- Header industrial com descrição -->
+        <!-- Header industrial -->
         <div class="mb-8 border-b border-cyan-800/40 pb-4 flex flex-wrap justify-between items-end">
             <div>
                 <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">⚙️ Guia Visual de Redes</h1>
@@ -142,59 +174,52 @@
 
         <!-- CONTEÚDO DA ABA 1: MEIOS FÍSICOS -->
         <div id="tabMeiosContent" class="tab-content fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                <!-- Card: Par Trançado -->
-                <div class="bg-[#131C23] rounded-2xl p-5 border border-gray-800 card-hover cursor-pointer transition-all" data-card="par">
-                    <div class="flex justify-between items-start mb-3">
-                        <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">📀 Par Trançado</h2>
-                        <span class="text-2xl">🪢</span>
+            <!-- Grid de 3 cards (limpos: apenas nome e ícone) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" id="cardsGrid">
+                <!-- Card Par Trançado -->
+                <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="par">
+                    <div class="flex flex-col items-center gap-3">
+                        <span class="text-5xl">🪢</span>
+                        <h2 class="text-xl font-bold text-cyan-300">Par Trançado</h2>
+                        <span class="text-xs text-gray-500 font-mono">CLIQUE PARA DETALHES</span>
                     </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-4">Cabo de rede comum (Ethernet/Profinet). Usado em CLPs, I/O remoto e comunicação supervisor.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="badge badge-green">💰 Custo: Baixo</span>
-                        <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
-                        <span class="badge bg-gray-800/60 text-gray-300 border-gray-600">🏭 Distância: até 100m</span>
-                    </div>
-                    <div class="text-right text-xs text-cyan-400/80 font-medium">Clique para detalhes técnicos →</div>
                 </div>
-                <!-- Card: Fibra Óptica -->
-                <div class="bg-[#131C23] rounded-2xl p-5 border border-gray-800 card-hover cursor-pointer transition-all" data-card="fibra">
-                    <div class="flex justify-between items-start mb-3">
-                        <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">✨ Fibra Óptica</h2>
-                        <span class="text-2xl">🔮</span>
+                <!-- Card Fibra Óptica -->
+                <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="fibra">
+                    <div class="flex flex-col items-center gap-3">
+                        <span class="text-5xl">🔮</span>
+                        <h2 class="text-xl font-bold text-cyan-300">Fibra Óptica</h2>
+                        <span class="text-xs text-gray-500 font-mono">CLIQUE PARA DETALHES</span>
                     </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-4">Cabo de vidro para longas distâncias, imune a interferência de motores, inversores e solda.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
-                        <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto</span>
-                        <span class="badge bg-gray-800/60 text-gray-300">🚀 Largura de Banda: Gigabit+</span>
-                    </div>
-                    <div class="text-right text-xs text-cyan-400/80 font-medium">Clique para detalhes técnicos →</div>
                 </div>
-                <!-- Card: Wireless -->
-                <div class="bg-[#131C23] rounded-2xl p-5 border border-gray-800 card-hover cursor-pointer transition-all" data-card="wireless">
-                    <div class="flex justify-between items-start mb-3">
-                        <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">📡 Wireless</h2>
-                        <span class="text-2xl">🔄</span>
+                <!-- Card Wireless -->
+                <div class="card-item bg-[#131C23] rounded-2xl p-6 border border-gray-800 card-hover text-center transition-all" data-card-type="wireless">
+                    <div class="flex flex-col items-center gap-3">
+                        <span class="text-5xl">📡</span>
+                        <h2 class="text-xl font-bold text-cyan-300">Wireless</h2>
+                        <span class="text-xs text-gray-500 font-mono">CLIQUE PARA DETALHES</span>
                     </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-4">Rede sem fio (Wi-Fi industrial / LoRa). Monitora sensores móveis, AGVs, pontos de difícil acesso.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="badge badge-green">🏃 Mobilidade: Máxima</span>
-                        <span class="badge bg-amber-950/40 text-amber-300 border-amber-700">⚠️ Sujeito a Barreiras</span>
-                        <span class="badge bg-gray-800/60 text-gray-300">📶 Alcance: médio/longo</span>
-                    </div>
-                    <div class="text-right text-xs text-cyan-400/80 font-medium">Clique para detalhes técnicos →</div>
                 </div>
             </div>
-            <!-- Área de explicação expandida abaixo (ou modal-like, mas exibição inline) -->
-            <div id="cardDetailArea" class="mt-8 explanatory-text rounded-xl p-5 hidden transition-all">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 id="detailTitle" class="font-bold text-cyan-300 text-lg flex items-center gap-2"></h3>
-                        <p id="detailText" class="text-gray-200 mt-2 leading-relaxed pr-6"></p>
-                        <div id="detailBadges" class="flex flex-wrap gap-2 mt-4"></div>
+
+            <!-- Painel de Detalhes (inicialmente oculto) -->
+            <div id="detailPanel" class="detail-panel mt-8 p-5 hidden transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="detailTitle" class="text-2xl font-bold text-cyan-300 flex items-center gap-2"></h3>
+                    <button id="closeDetailBtn" class="close-detail-btn text-gray-400 hover:text-red-400 text-2xl leading-5 w-8 h-8 rounded-full flex items-center justify-center transition-all">✕</button>
+                </div>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Imagem (caminho relativo para pasta imagens) -->
+                    <div class="md:w-1/2">
+                        <img id="detailImage" src="" alt="Imagem do cabo" class="rounded-xl border border-cyan-500/30 shadow-lg w-full object-cover bg-black/30">
                     </div>
-                    <button id="closeDetailBtn" class="text-gray-400 hover:text-cyan-300 text-xl leading-5">✕</button>
+                    <!-- Texto e badges -->
+                    <div class="md:w-1/2 flex flex-col justify-between">
+                        <div>
+                            <p id="detailText" class="text-gray-200 text-base leading-relaxed mb-5"></p>
+                            <div id="detailBadges" class="flex flex-wrap gap-3 mt-2"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,12 +236,11 @@
                     </button>
                 </div>
                 
-                <!-- Painel de exibição da topologia selecionada -->
+                <!-- Painel de exibição da topologia -->
                 <div id="topologyDisplay" class="mini-topology transition-all">
-                    <!-- Mensagem inicial / padrão carregada? Inicialmente vazia, mas carregamos barramento por padrão ao abrir? melhor pré-definir barramento para não ficar vazio -->
-                    <!-- O JavaScript vai preencher ao carregar ou quando clicar; faremos que ao clicar na aba Simulador a primeira topologia (Barramento) já seja exibida -->
+                    <!-- Conteúdo será preenchido dinamicamente -->
                 </div>
-                <!-- Área de vantagens / desvantagens e lista -->
+                <!-- Área de vantagens / desvantagens -->
                 <div id="topologyDetails" class="mt-6 bg-[#0C1117] rounded-xl p-5 border-l-4 border-cyan-500/70">
                     <!-- dinâmico -->
                 </div>
@@ -225,16 +249,14 @@
     </div>
 
     <script>
-        // ------------------- Controle de abas (Meios Físicos X Simulador) -------------------
+        // ------------------- Controle de abas -------------------
         const tabMeiosBtn = document.getElementById('tabMeiosBtn');
         const tabSimuladorBtn = document.getElementById('tabSimuladorBtn');
         const contentMeios = document.getElementById('tabMeiosContent');
         const contentSimulador = document.getElementById('tabSimuladorContent');
-        const cardDetailArea = document.getElementById('cardDetailArea');
+        const detailPanel = document.getElementById('detailPanel');
         
-        // Função para resetar abas e exibir conteúdo correto
         function setActiveTab(tab) {
-            // Resetar estilos dos botões
             tabMeiosBtn.classList.remove('topo-btn-active');
             tabMeiosBtn.classList.add('topo-btn-inactive');
             tabSimuladorBtn.classList.remove('topo-btn-active');
@@ -245,20 +267,16 @@
                 tabMeiosBtn.classList.add('topo-btn-active');
                 contentMeios.classList.remove('hidden');
                 contentSimulador.classList.add('hidden');
-                // sempre que voltar à aba Meios, esconder o detalhe dos cards se tiver aberto (opcional)
-                if(cardDetailArea && !cardDetailArea.classList.contains('hidden')) {
-                    cardDetailArea.classList.add('hidden');
-                }
+                // Ao voltar para meios, se o detailPanel estiver visível, mantém (melhor usabilidade)
+                // apenas não faz nada, detalhes permanecem se aberto
             } else {
                 tabSimuladorBtn.classList.remove('topo-btn-inactive');
                 tabSimuladorBtn.classList.add('topo-btn-active');
                 contentMeios.classList.add('hidden');
                 contentSimulador.classList.remove('hidden');
-                // Ao clicar no simulador, se não houver nenhuma topologia sendo exibida, carregamos Barramento como default
+                // Renderizar topologia padrão se estiver vazia
                 const displayDiv = document.getElementById('topologyDisplay');
                 if (displayDiv && displayDiv.innerHTML.trim() === '') {
-                    renderTopology('barramento');
-                } else if (displayDiv && !displayDiv.hasAttribute('data-loaded')) {
                     renderTopology('barramento');
                 }
             }
@@ -267,56 +285,100 @@
         tabMeiosBtn.addEventListener('click', () => setActiveTab('meios'));
         tabSimuladorBtn.addEventListener('click', () => setActiveTab('simulador'));
         
-        // ------------------- Lógica dos Cards (Meios Físicos) com exibição explicativa inline -------------------
-        const parCard = document.querySelector('[data-card="par"]');
-        const fibraCard = document.querySelector('[data-card="fibra"]');
-        const wirelessCard = document.querySelector('[data-card="wireless"]');
-        const closeDetail = document.getElementById('closeDetailBtn');
-        const detailTitle = document.getElementById('detailTitle');
-        const detailText = document.getElementById('detailText');
-        const detailBadgesSpan = document.getElementById('detailBadges');
+        // ------------------- Lógica dos Cards (limpos + painel de detalhes) -------------------
+        const cards = document.querySelectorAll('.card-item');
+        const detailTitleSpan = document.getElementById('detailTitle');
+        const detailImage = document.getElementById('detailImage');
+        const detailTextP = document.getElementById('detailText');
+        const detailBadgesDiv = document.getElementById('detailBadges');
+        const closeDetailBtn = document.getElementById('closeDetailBtn');
         
-        function showCardDetail(cardType) {
-            let title = '';
-            let mainText = '';
-            let badgesHtml = '';
-            if (cardType === 'par') {
-                title = '🔹 Par Trançado (U/FTP, CAT5e/CAT6)';
-                mainText = 'Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor, além de conectar switches e IHMs. Excelente para curtas distâncias em painéis industriais.';
-                badgesHtml = `<span class="badge badge-green">💰 Custo: Baixo</span>
-                              <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">📏 Máx. 100m</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">🔌 Conector RJ45</span>`;
-            } else if (cardType === 'fibra') {
-                title = '🔹 Fibra Óptica (Monomodo / Multimodo)';
-                mainText = 'O cabo de vidro. Usado para levar dados a longas distâncias na fábrica sem sofrer com a interferência dos motores elétricos, inversores e campos eletromagnéticos severos. Ideal para interligar subestações e CCMs.';
-                badgesHtml = `<span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
-                              <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto (conversores)</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">📡 Distância: até 40km</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">🔌 Conector SC/LC</span>`;
-            } else if (cardType === 'wireless') {
-                title = '🔹 Rede Sem Fio (Wireless Industrial)';
-                mainText = 'Rede sem fio. Usado para monitorar sensores que ficam em locais móveis ou de difícil acesso, como pontes rolantes, AGVs, robôs móveis. Necessita planejamento de canais e pontos de acesso industriais.';
-                badgesHtml = `<span class="badge badge-green">🏃 Mobilidade: Máxima</span>
-                              <span class="badge bg-amber-950/40 text-amber-300 border-amber-700">⚠️ Sujeito a Barreiras e Reflexões</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">📶 Padrão: Wi-Fi 6 / 5G</span>
-                              <span class="badge bg-gray-800/60 text-gray-300">🔒 Segurança: WPA2-Enterprise</span>`;
-            }
-            detailTitle.innerHTML = title;
-            detailText.innerHTML = mainText;
-            detailBadgesSpan.innerHTML = badgesHtml;
-            cardDetailArea.classList.remove('hidden');
-            cardDetailArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-        
-        parCard.addEventListener('click', () => showCardDetail('par'));
-        fibraCard.addEventListener('click', () => showCardDetail('fibra'));
-        wirelessCard.addEventListener('click', () => showCardDetail('wireless'));
-        if (closeDetail) {
-            closeDetail.addEventListener('click', () => {
-                cardDetailArea.classList.add('hidden');
+        // Função para remover a classe 'card-active' de todos os cards
+        function removeActiveClass() {
+            cards.forEach(card => {
+                card.classList.remove('card-active');
+                card.style.border = '';
+                card.style.boxShadow = '';
             });
         }
+        
+        // Função para exibir detalhes do card selecionado
+        function showCardDetails(cardType) {
+            // Armazena o tipo atual para referência
+            let title = '';
+            let imageSrc = '';
+            let description = '';
+            let badgesHtml = '';
+            
+            if (cardType === 'par') {
+                title = '🔹 Par Trançado (UTP / STP)';
+                imageSrc = 'imagens/par-trancado.jpg';
+                description = 'Cabo de rede comum (Ethernet/Profinet). Usado para ligar o CLP ao computador do supervisor, além de conectar switches, IHMs e dispositivos de campo em distâncias de até 100 metros.';
+                badgesHtml = `
+                    <span class="badge badge-green">💰 Custo: Baixo</span>
+                    <span class="badge badge-cyan">⚡ Flexibilidade: Alta</span>
+                `;
+            } 
+            else if (cardType === 'fibra') {
+                title = '🔹 Fibra Óptica (Monomodo / Multimodo)';
+                imageSrc = 'imagens/fibra.jpg';
+                description = 'O cabo de vidro. Usado para levar dados a longas distâncias na fábrica sem sofrer com a interferência dos motores elétricos, inversores e campos eletromagnéticos severos. Ideal para interligar subestações e CCMs.';
+                badgesHtml = `
+                    <span class="badge badge-cyan">🛡️ Imunidade a Ruídos: Excelente</span>
+                    <span class="badge bg-red-950/50 text-red-300 border-red-800/60">💰 Custo: Alto</span>
+                `;
+            }
+            else if (cardType === 'wireless') {
+                title = '🔹 Rede Sem Fio (Wireless Industrial)';
+                imageSrc = 'imagens/wireless.jpg';
+                description = 'Rede sem fio. Usado para monitorar sensores que ficam em locais móveis ou de difícil acesso, como pontes rolantes, AGVs, robôs móveis. Necessita planejamento de canais e pontos de acesso industriais.';
+                badgesHtml = `
+                    <span class="badge badge-green">🏃 Mobilidade: Máxima</span>
+                    <span class="badge bg-amber-950/40 text-amber-300 border-amber-700">⚠️ Sujeito a Barreiras</span>
+                `;
+            }
+            
+            // Preenche o painel
+            detailTitleSpan.innerHTML = title;
+            detailImage.src = imageSrc;
+            detailImage.alt = `Imagem ilustrativa de ${title}`;
+            // Caso a imagem não exista, adiciona um evento para fallback (não quebrar layout)
+            detailImage.onerror = function() {
+                this.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem+Não+Encontrada';
+                this.alt = 'Imagem indisponível';
+            };
+            detailTextP.innerHTML = description;
+            detailBadgesDiv.innerHTML = badgesHtml;
+            
+            // Exibe o painel com animação suave
+            detailPanel.classList.remove('hidden');
+            detailPanel.classList.add('fade-in');
+            // Scroll suave para o painel
+            detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Eventos de clique nos cards
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const cardType = card.getAttribute('data-card-type');
+                // Remove a classe ativa de todos os cards
+                removeActiveClass();
+                // Adiciona classe de destaque no card clicado
+                card.classList.add('card-active');
+                // Mostra os detalhes correspondentes
+                showCardDetails(cardType);
+            });
+        });
+        
+        // Fechar painel de detalhes
+        closeDetailBtn.addEventListener('click', () => {
+            detailPanel.classList.add('hidden');
+            // Remove a classe ativa dos cards para limpar a interface
+            removeActiveClass();
+        });
+        
+        // Se o usuário clicar fora, opcional? mantemos só o X para simplicidade e usabilidade industrial.
         
         // ------------------- SIMULADOR DE TOPOLOGIA (Lógica Completa) -------------------
         const btnBarramento = document.getElementById('btnBarramento');
@@ -325,14 +387,12 @@
         const topologyDetailsDiv = document.getElementById('topologyDetails');
         
         function renderTopology(type) {
-            // Mini representação visual + texto descritivo principal + vantagens/desvantagens
             if (type === 'barramento') {
-                // Visual em série (bus/barramento)
                 const visualHtml = `
                     <div class="flex flex-col items-center">
-                        <div class="text-xs font-mono text-cyan-400 mb-2">🔷 TOPOLOGIA EM BARRA (Linear)</div>
+                        <div class="text-xs font-mono text-cyan-400 mb-2">🔷 TOPOLOGIA EM BARRA (Linear) - Bus</div>
                         <div class="relative w-full flex justify-center items-center gap-1 flex-wrap">
-                            <div class="flex items-center gap-1 sm:gap-3 bg-[#0D141A] p-4 rounded-xl w-full justify-center">
+                            <div class="flex items-center gap-1 sm:gap-3 bg-[#0D141A] p-4 rounded-xl w-full justify-center flex-wrap">
                                 <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M1</div>
                                 <div class="bus-line w-8 sm:w-12"></div>
                                 <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center text-center text-xs font-bold shadow-md">M2</div>
@@ -361,7 +421,6 @@
                 };
                 topologyDisplayDiv.innerHTML = visualHtml;
                 topologyDisplayDiv.setAttribute('data-loaded', 'barramento');
-                // mostrar texto de vantagens/desvantagens estruturado
                 topologyDetailsDiv.innerHTML = `
                     <h3 class="text-xl font-bold text-cyan-300 mb-3">${details.title}</h3>
                     <p class="text-gray-300 text-sm md:text-base mb-4">${details.description}</p>
@@ -378,24 +437,22 @@
                 `;
             } 
             else if (type === 'estrela') {
-                // Visual em estrela: switch central + 4 máquinas ao redor
                 const visualHtml = `
                     <div class="flex flex-col items-center">
                         <div class="text-xs font-mono text-emerald-300 mb-2">⭐ TOPOLOGIA EM ESTRELA (Switch Central)</div>
-                        <div class="relative flex justify-center min-h-[180px]">
-                            <div class="relative flex flex-wrap justify-center items-center gap-6 md:gap-10 bg-[#0D141A] p-6 rounded-xl">
+                        <div class="relative flex justify-center min-h-[200px]">
+                            <div class="relative flex flex-wrap justify-center items-center gap-6 md:gap-10 bg-[#0D141A] p-6 rounded-xl w-full">
                                 <!-- Switch central -->
                                 <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
                                     <div class="switch-node w-20 h-20 rounded-xl flex items-center justify-center font-bold text-cyan-100 shadow-2xl">SWITCH</div>
                                 </div>
-                                <!-- Máquinas ao redor posicionadas com css grid -->
+                                <!-- Máquinas ao redor em grid -->
                                 <div class="grid grid-cols-2 gap-x-14 gap-y-12 mt-8 mb-8 relative" style="width:280px">
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative">M1</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative">M2</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative">M3</div>
-                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative">M4</div>
+                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M1</div>
+                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M2</div>
+                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M3</div>
+                                    <div class="network-node machine-node w-14 h-14 rounded-lg flex items-center justify-center font-bold z-20 relative shadow-md">M4</div>
                                 </div>
-                                <!-- Linhas decorativas conectando switch -> maquina (pseudo com pseudo-elemento? para clareza visual adicionamos SVG, mas manter simples) -->
                             </div>
                         </div>
                         <p class="text-gray-300 text-sm mt-4 text-center">Todas as máquinas ligam a um Switch central. Falha em um ponto não afeta os demais.</p>
@@ -434,24 +491,10 @@
             }
         }
         
-        btnBarramento.addEventListener('click', () => {
-            renderTopology('barramento');
-        });
-        btnEstrela.addEventListener('click', () => {
-            renderTopology('estrela');
-        });
+        btnBarramento.addEventListener('click', () => renderTopology('barramento'));
+        btnEstrela.addEventListener('click', () => renderTopology('estrela'));
         
-        // Inicialização: Ao carregar página, já está ativa a aba "Meios Físicos", nenhum problema.
-        // Mas se o usuário for para simulador, garantir que algo apareça. Além disso, definir estado default para simulador caso o usuário nunca clique:
-        // Para não ficar vazio, na primeira vez que o simulador for exibido, carregamos barramento. Já na função setActiveTab 'simulador' chamamos a verificação.
-        // Só precisamos também garantir que se o usuário estiver na aba simulador ao recarregar? Ao carregar a página a aba meios está visível, então está ok.
-        // Forçar um preload de barramento no display se a aba simulador for mostrada pela primeira vez
-        // adapter para que o conteúdo não fique vazio (caso alguém vá direto na âncora?)
-        if (contentSimulador && !contentSimulador.classList.contains('hidden')) {
-            renderTopology('barramento');
-        }
-        
-        // Se usuário já clicar em simular, tudo bem, mas também caso a aba seja mostrada de forma inicial não, mas garantia:
+        // Inicialização: garantir que ao clicar no simulador mostre barramento padrão se vazio
         const observer = new MutationObserver(() => {
             if (!contentSimulador.classList.contains('hidden') && (!topologyDisplayDiv.innerHTML || topologyDisplayDiv.innerHTML.trim() === '')) {
                 renderTopology('barramento');
@@ -459,9 +502,13 @@
         });
         observer.observe(contentSimulador, { attributes: true, attributeFilter: ['class'] });
         
-        // Pequeno detalhe: na primeira execução, nenhuma topologia exibida? mas o botão barramento irá funcionar. Para boa experiência já renderizamos barramento somente se o display estiver vazio quando for clicado o simulador. 
-        // Como já temos o observer, caso a classe mude para visible, irá renderizar. Porém renderização duplicada? Protegemos com innerHTML vazio.
-        // Forçar evento se ao carregar a página a tab simulador não estiver ativa. tudo certo.
+        // Se a página abrir com a aba simulador já ativa (caso raro, mas seguro)
+        if (!contentSimulador.classList.contains('hidden') && topologyDisplayDiv.innerHTML.trim() === '') {
+            renderTopology('barramento');
+        }
+        
+        // Pré-carregar fallback para imagens: não quebrar layout caso não existam
+        // apenas tratamento inline no erro da imagem
     </script>
 </body>
 </html>
