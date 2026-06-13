@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia Visual de Redes v3 | Industrial Tech</title>
+    <title>Guia Visual de Redes v4 | Industrial Tech</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -25,7 +25,7 @@
         button.topo-btn-active { border-bottom: 2px solid #00E5FF; color: #00E5FF; background: #1A2C34; }
         button.topo-btn-inactive { color: #C0D4E6; border-bottom: 2px solid transparent; }
         button.topo-btn-inactive:hover { background: #1F2A32; border-bottom: 2px solid #2A9D8F; color: #E6F7FF; }
-        .version-badge { background: linear-gradient(135deg, #059669, #047857); color: #D1FAE5; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid #34D399; box-shadow: 0 0 8px rgba(52,211,153,0.3); }
+        .version-badge { background: linear-gradient(135deg, #EA580C, #C2410C); color: #FED7AA; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid #F97316; box-shadow: 0 0 8px rgba(249,115,22,0.3); }
         .network-node { transition: all 0.2s; box-shadow: 0 0 0 1px rgba(0,255,200,0.3), 0 2px 6px rgba(0,0,0,0.4); }
         .switch-node { background: #0D3B66; border: 2px solid #00E5FF; box-shadow: 0 0 8px #00e5ff60; }
         .machine-node { background: #1E6F5C; border: 1px solid #2A9D8F; }
@@ -47,7 +47,7 @@
                     <h1 class="text-3xl md:text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">⚙️ Guia Visual de Redes</h1>
                     <p class="text-gray-400 text-sm font-mono mt-1">para Automação Industrial — técnicos e eletricistas iniciantes</p>
                 </div>
-                <div class="version-badge ml-2 md:ml-4 shadow-lg">🚀 VERSÃO v3</div>
+                <div class="version-badge ml-2 md:ml-4 shadow-lg">🚀 VERSÃO v4</div>
             </div>
             <div class="text-xs text-cyan-400/70 font-mono mt-2 md:mt-0">SCADA READY • PROTOCOLO INDUSTRIAL</div>
         </div>
@@ -138,9 +138,9 @@
         const closeBtn = document.getElementById('closeDetailBtn');
         
         const IMAGES = {
-            par: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&q=80',
-            fibra: 'https://images.unsplash.com/photo-1601524909162-be87252be298?w=500&q=80',
-            rs485: 'https://images.unsplash.com/photo-1581092334651-ddf26d9aae9d?w=500&q=80'
+            par: 'https://images.pexels.com/photos/159282/network-cable-ethernet-computer-159282.jpeg?auto=compress&cs=tinysrgb&w=500',
+            fibra: 'https://images.pexels.com/photos/4011015/pexels-photo-4011015.jpeg?auto=compress&cs=tinysrgb&w=500',
+            rs485: 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=500'
         };
         
         function removeActiveClass() {
@@ -171,7 +171,7 @@
             
             detailTitle.innerHTML = title;
             detailImage.src = imageSrc;
-            detailImage.onerror = () => { detailImage.src = 'https://placehold.co/600x400/1E293B/00E5FF?text=Imagem+Indisponível'; };
+            detailImage.onerror = () => { detailImage.src = 'https://picsum.photos/id/443/600/400'; };
             detailDescription.innerHTML = description;
             detailTechnical.innerHTML = technical;
             detailBadges.innerHTML = badges;
